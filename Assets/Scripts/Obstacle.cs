@@ -2,13 +2,19 @@ using UnityEngine;
 
 public class Obstacle : MonoBehaviour
 {
+    [Header("Size Properties")]
     [SerializeField] private float minSize = 0.5f;
     [SerializeField] private float maxSize = 2.0f;
 
+    [Header("Movement Speed Properties")]
     [SerializeField] private float minSpeed = 50f;
     [SerializeField] private float maxSpeed = 150f;
 
+    [Header("Spin Speed Properties")]
     [SerializeField] float maxSpinSpeed = 10f;
+
+    [Header("Prefab References")]
+    [SerializeField] private GameObject impactEffectPrefab;
 
     private Rigidbody2D rb;
 
@@ -28,9 +34,11 @@ public class Obstacle : MonoBehaviour
         rb.AddTorque(randomTorque);
     }
 
-
-    private void Update()
+    private void OnCollisionEnter2D(Collision2D collision)
     {
+        Vector2 contactPoint = collision.GetContact(0).point;
+        GameObject bounceEffect = Instantiate(impactEffectPrefab, contactPoint, Quaternion.identity);
 
+        Destroy(bounceEffect, 1f);
     }
 }

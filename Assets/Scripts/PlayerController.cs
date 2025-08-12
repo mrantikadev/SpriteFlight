@@ -1,16 +1,22 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
 public class PlayerController : MonoBehaviour
 {
     public UIDocument uiDocument;
     private Label scoreText;
+    private Label highScoreText;
+    private Button restartButton;
 
+    [Header("Movement Properties")]
     [SerializeField] private float thrustForce = 1f;
     [SerializeField] private float maxSpeed = 5f;
 
-    [SerializeField] private GameObject boosterFlame;
+    [Header("Prefab References")]
+    [SerializeField] private GameObject boosterFlamePrefab;
+    [SerializeField] private GameObject explosionEffectPrefab;
 
     private float elapsedTime = 0f;
 
@@ -23,8 +29,14 @@ public class PlayerController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         scoreText = uiDocument.rootVisualElement.Q<Label>("ScoreLabel");
-    }
+        highScoreText = uiDocument.rootVisualElement.Q<Label>("HighScoreLabel");
 
+        restartButton = uiDocument.rootVisualElement.Q<Button>("RestartButton");
+        restartButton.style.display = DisplayStyle.None;
+        restartButton.clicked += ReloadScene;
+
+        LoadHighScoreData();
+    }
 
     private void Update()
     {
@@ -34,7 +46,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        Destroy(gameObject);
+        GameOver();
     }
 
     private void UpdateScore()
@@ -64,11 +76,45 @@ public class PlayerController : MonoBehaviour
 
         if (Mouse.current.leftButton.wasPressedThisFrame)
         {
-            boosterFlame.SetActive(true);
+            boosterFlamePrefab.SetActive(true);
         }
         else if (Mouse.current.leftButton.wasReleasedThisFrame)
         {
-            boosterFlame.SetActive(false);
+            boosterFlamePrefab.SetActive(false);
+        }
+    }
+
+    private void ReloadScene()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    private void SaveHighScoreData()
+    {
+        PlayerPrefs.SetFloat("HighScore", score);
+        PlayerPrefs.Save();
+    }
+
+    private void LoadHighScoreData()
+    {
+        if (PlayerPrefs.HasKey("HighScore"))
+        {
+            float highScore = PlayerPrefs.GetFloat("HighScore");
+            highScoreText.text = "High Score: " + highScore;
+        }
+    }
+
+    private void GameOver()
+    {
+        Destroy(gameObject);
+        Instantiate(explosionEffectPrefab, transform.position, transform.rotation);
+        restartButton.style.display = DisplayStyle.Flex;
+
+        if (score > PlayerPrefs.GetFloat("HighScore", 0f))
+        {
+            PlayerPrefs.SetFloat("HighScore", score);
+            highScoreText.text = "High Score: " + score;
+            SaveHighScoreData();
         }
     }
 }

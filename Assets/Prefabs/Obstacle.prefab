@@ -182,3 +182,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4d3e47a517d5254189cac20ccf0830d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  minSize: 0.5
+  maxSize: 2
+  minSpeed: 50
+  maxSpeed: 150
+  maxSpinSpeed: 10
+  impactEffectPrefab: {fileID: 7218778804408824309, guid: cccb19019e71234439218c9f81ea9436, type: 3}

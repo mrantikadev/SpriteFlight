@@ -2025,7 +2025,8 @@ MonoBehaviour:
   uiDocument: {fileID: 1140315015}
   thrustForce: 1
   maxSpeed: 5
-  boosterFlame: {fileID: 1257541382}
+  boosterFlamePrefab: {fileID: 1257541382}
+  explosionEffectPrefab: {fileID: 3018111343797562905, guid: 65561a45a0f30594aa97f88e569026a0, type: 3}
 --- !u!1 &1857751622
 GameObject:
   m_ObjectHideFlags: 0
