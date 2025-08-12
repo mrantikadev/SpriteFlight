@@ -1,22 +1,50 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
 
 public class PlayerController : MonoBehaviour
 {
+    public UIDocument uiDocument;
+    private Label scoreText;
+
     [SerializeField] private float thrustForce = 1f;
     [SerializeField] private float maxSpeed = 5f;
 
     [SerializeField] private GameObject boosterFlame;
 
-    Rigidbody2D rb;
+    private float elapsedTime = 0f;
+
+    private float score = 0f;
+    private float scoreMultiplier = 10f;
+
+    private Rigidbody2D rb;
 
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        scoreText = uiDocument.rootVisualElement.Q<Label>("ScoreLabel");
     }
 
 
     private void Update()
+    {
+        UpdateScore();
+        MovePlayer();
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        Destroy(gameObject);
+    }
+
+    private void UpdateScore()
+    {
+        elapsedTime += Time.deltaTime;
+        score = Mathf.FloorToInt(elapsedTime * scoreMultiplier);
+        scoreText.text = "Score: " + score;
+    }
+
+    private void MovePlayer()
     {
         if (Mouse.current.leftButton.isPressed)
         {
@@ -42,10 +70,5 @@ public class PlayerController : MonoBehaviour
         {
             boosterFlame.SetActive(false);
         }
-    }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        Destroy(gameObject);
     }
 }
