@@ -3,6 +3,6 @@
     <ui:VisualElement style="flex-grow: 1;">
         <ui:Label text="Score: 0" name="ScoreLabel" class="label" />
         <ui:Label text="High Score: 0" name="HighScoreLabel" class="label" style="background-color: rgb(212, 159, 45);" />
-        <ui:Button text="Restart" name="RestartButton" style="position: absolute; top: 50%; align-self: center; -unity-font-definition: url(&quot;project://database/Assets/Fonts/MozillaHeadline-VariableFont_wdth,wght.ttf?fileID=12800000&amp;guid=7beac45f86c63c3488e4694b9e0786c4&amp;type=3#MozillaHeadline-VariableFont_wdth,wght&quot;); font-size: 20px; -unity-font-style: bold;" />
+        <ui:Button text="Restart" name="RestartButton" style="position: absolute; top: 50%; align-self: center; -unity-font-definition: url(&quot;project://database/Assets/Fonts/MozillaHeadline-VariableFont_wdth,wght.ttf?fileID=12800000&amp;guid=7beac45f86c63c3488e4694b9e0786c4&amp;type=3#MozillaHeadline-VariableFont_wdth,wght&quot;); font-size: 20px; -unity-font-style: bold; border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-right-radius: 5px; border-bottom-left-radius: 5px;" />
     </ui:VisualElement>
 </ui:UXML>

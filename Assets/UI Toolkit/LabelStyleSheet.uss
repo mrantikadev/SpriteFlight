@@ -1,5 +1,5 @@
 .label {
-    top: 8%;
+    top: 12%;
     opacity: 1;
     align-self: flex-start;
     justify-content: flex-start;
@@ -12,7 +12,7 @@
     padding-right: 8px;
     padding-bottom: 8px;
     padding-left: 8px;
-    left: 5%;
+    left: 8%;
     width: auto;
     -unity-font-definition: url("project://database/Assets/Fonts/MozillaHeadline-VariableFont_wdth,wght.ttf?fileID=12800000&guid=7beac45f86c63c3488e4694b9e0786c4&type=3#MozillaHeadline-VariableFont_wdth,wght");
     font-size: 16px;

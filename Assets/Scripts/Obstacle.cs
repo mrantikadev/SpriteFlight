@@ -34,6 +34,11 @@ public class Obstacle : MonoBehaviour
         rb.AddTorque(randomTorque);
     }
 
+    private void FixedUpdate()
+    {
+        rb.linearVelocity = Vector2.ClampMagnitude(rb.linearVelocity, 600f);
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         Vector2 contactPoint = collision.GetContact(0).point;

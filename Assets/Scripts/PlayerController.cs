@@ -5,6 +5,9 @@ using UnityEngine.UIElements;
 
 public class PlayerController : MonoBehaviour
 {
+    public InputAction moveForward;
+    public InputAction lookPosition;
+
     public UIDocument uiDocument;
     private Label scoreText;
     private Label highScoreText;
@@ -17,6 +20,8 @@ public class PlayerController : MonoBehaviour
     [Header("Prefab References")]
     [SerializeField] private GameObject boosterFlamePrefab;
     [SerializeField] private GameObject explosionEffectPrefab;
+    [SerializeField] private GameObject borderParent;
+    [SerializeField] private GameObject obstacleParent;
 
     private float elapsedTime = 0f;
 
@@ -30,10 +35,14 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         scoreText = uiDocument.rootVisualElement.Q<Label>("ScoreLabel");
         highScoreText = uiDocument.rootVisualElement.Q<Label>("HighScoreLabel");
+        highScoreText.style.display = DisplayStyle.None;
 
         restartButton = uiDocument.rootVisualElement.Q<Button>("RestartButton");
         restartButton.style.display = DisplayStyle.None;
         restartButton.clicked += ReloadScene;
+
+        moveForward.Enable();
+        lookPosition.Enable();
 
         LoadHighScoreData();
     }
@@ -58,10 +67,9 @@ public class PlayerController : MonoBehaviour
 
     private void MovePlayer()
     {
-        if (Mouse.current.leftButton.isPressed)
+        if (moveForward.IsPressed())
         {
-            // Calculate mouse direction
-            Vector3 mousePos = Camera.main.ScreenToWorldPoint(Mouse.current.position.value);
+            Vector3 mousePos = Camera.main.ScreenToWorldPoint(lookPosition.ReadValue<Vector2>());
             Vector2 direction = (mousePos - transform.position).normalized;
 
             // Move player in direction of mouse
@@ -74,11 +82,11 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        if (Mouse.current.leftButton.wasPressedThisFrame)
+        if (moveForward.WasPressedThisFrame())
         {
             boosterFlamePrefab.SetActive(true);
         }
-        else if (Mouse.current.leftButton.wasReleasedThisFrame)
+        else if (moveForward.WasReleasedThisFrame())
         {
             boosterFlamePrefab.SetActive(false);
         }
@@ -108,7 +116,10 @@ public class PlayerController : MonoBehaviour
     {
         Destroy(gameObject);
         Instantiate(explosionEffectPrefab, transform.position, transform.rotation);
+        highScoreText.style.display = DisplayStyle.Flex;
         restartButton.style.display = DisplayStyle.Flex;
+        borderParent.SetActive(false);
+        Destroy(obstacleParent, 10f);
 
         if (score > PlayerPrefs.GetFloat("HighScore", 0f))
         {
